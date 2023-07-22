@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:ecommerce_ui_flutter/config/constants/enviroments.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-void main() {
-  runApp(const MainApp());
+void main() async {
+  await Environment.initEnvironment();
+
+  runApp(const ProviderScope(child: MainApp()));
 }
 
 class MainApp extends StatelessWidget {
