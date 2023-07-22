@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:ecommerce_ui_flutter/auth/presentation/widgets/widgets.dart';
 
@@ -116,14 +115,15 @@ class _LoginScreenState extends State<LoginScreen> {
                             : const SizedBox(height: 50),
 
                         //button
-                        SizedBox(
+                        CustomFilledButton(
                           width: 250,
                           height: 50,
-                          child: CustomFilledButton(onPressed: () {
+                          text: "Login",
+                          onPressed: () {
                             setState(() {
                               temp = !temp;
                             });
-                          }),
+                          },
                         ),
 
                         const SizedBox(height: 10),
