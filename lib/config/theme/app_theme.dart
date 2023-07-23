@@ -12,6 +12,8 @@ class AppTheme {
     useMaterial3: true,
     brightness: Brightness.light,
     colorSchemeSeed: Colors.green,
+    primaryColor: Colors.green,
+    // scaffoldBackgroundColor: const Color(0xFFF9F8FD),
     // textTheme: TextTheme(
     //   bodyLarge: GoogleFonts.montserrat(color: Colors.green),
     // ),

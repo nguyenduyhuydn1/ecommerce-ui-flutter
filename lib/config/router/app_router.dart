@@ -1,15 +1,15 @@
-import 'package:ecommerce_ui_flutter/auth/presentation/screens/screens.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:ecommerce_ui_flutter/auth/presentation/screens/screens.dart';
+import 'package:ecommerce_ui_flutter/products/presentation/screens/screens.dart';
+
 final appRouter = GoRouter(
-  initialLocation: '/complete_profile',
+  initialLocation: '/home',
   routes: [
     GoRoute(
       path: '/login',
       // name: HomeScreen.name,
       builder: (context, state) {
-        // final pageIndex = int.parse(state.pathParameters['page'] ?? '0');
-
         return const LoginScreen();
       },
       // routes: [
@@ -37,8 +37,15 @@ final appRouter = GoRouter(
       },
     ),
     GoRoute(
+      path: '/home',
+      builder: (context, state) {
+        // final pageIndex = int.parse(state.pathParameters['page'] ?? '0');
+        return const HomeScreen();
+      },
+    ),
+    GoRoute(
       path: '/',
-      redirect: (_, __) => '/home/0',
+      redirect: (_, __) => '/home',
     ),
   ],
 );

@@ -42,6 +42,12 @@ class CompleteProfileScreen extends StatelessWidget {
                 ),
                 CustomTextField(
                   hintText: "Re-enter your address",
+                ),
+                CustomTextField(
+                  hintText: "City",
+                ),
+                CustomTextField(
+                  hintText: "Postal code",
                   borderBottom: false,
                 ),
               ]),
