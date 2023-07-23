@@ -9,6 +9,7 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
+      physics: const ClampingScrollPhysics(),
       slivers: [
         const SliverAppBar(
           floating: true,
@@ -22,7 +23,24 @@ class HomeView extends StatelessWidget {
           delegate: SliverChildBuilderDelegate(
             childCount: 1,
             (context, index) {
-              return const ProductHorizontalListView();
+              return const Column(
+                children: [
+                  ProductHorizontalListView(
+                    title: "Recomended",
+                    height: 280,
+                  ),
+                  ProductHorizontalListView(
+                    widthProduct: 0.7,
+                    title: "Recomended",
+                    height: 380,
+                  ),
+                  ProductHorizontalListView(
+                    widthProduct: 0.7,
+                    title: "Recomended",
+                    height: 380,
+                  ),
+                ],
+              );
             },
           ),
         ),

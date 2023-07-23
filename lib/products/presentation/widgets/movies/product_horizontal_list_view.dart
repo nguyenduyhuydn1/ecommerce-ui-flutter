@@ -1,21 +1,31 @@
 import 'package:flutter/material.dart';
 
 class ProductHorizontalListView extends StatelessWidget {
-  const ProductHorizontalListView({super.key});
+  final double widthProduct;
+  final String title;
+  final double height;
+  const ProductHorizontalListView({
+    super.key,
+    this.widthProduct = 0.4,
+    required this.title,
+    required this.height,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const _Title(title: "Recomened"),
+        _Title(title: title),
         SizedBox(
-          height: 360,
+          height: height,
           child: ListView.builder(
             itemCount: 5,
             scrollDirection: Axis.horizontal,
             physics: const BouncingScrollPhysics(),
             itemBuilder: (context, index) {
-              return const _Slide();
+              return _Slide(
+                widthProduct: widthProduct,
+              );
             },
           ),
         ),
@@ -25,22 +35,71 @@ class ProductHorizontalListView extends StatelessWidget {
 }
 
 class _Slide extends StatelessWidget {
-  const _Slide();
+  final double widthProduct;
+  const _Slide({required this.widthProduct});
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final textStyle = Theme.of(context).textTheme;
+
     return Container(
-      width: 150,
-      margin: const EdgeInsets.symmetric(horizontal: 8),
+      margin: const EdgeInsets.fromLTRB(12, 0, 12, 30),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.green[50]!,
+                  blurRadius: 20,
+                  offset: const Offset(0, 10),
+                ),
+              ],
+            ),
+            width: size.width * widthProduct,
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: Image.asset(
-                'assets/images/1.jpg',
-                fit: BoxFit.cover,
+              borderRadius: BorderRadius.circular(10),
+              child: Column(
+                children: [
+                  Image.asset(
+                    'assets/images/1.jpg',
+                    fit: BoxFit.cover,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                    child: Row(
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "Shirt 2\n".toUpperCase(),
+                                style: textStyle.titleMedium
+                                    ?.copyWith(fontSize: 17),
+                              ),
+                              TextSpan(
+                                text: "Guci",
+                                style: textStyle.titleMedium?.copyWith(
+                                  fontSize: 17,
+                                  color: Colors.green,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Spacer(),
+                        const Text(
+                          "\$50",
+                          style: TextStyle(color: Colors.green, fontSize: 20),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -61,28 +120,31 @@ class _Title extends StatelessWidget {
   Widget build(BuildContext context) {
     final titleStyle = Theme.of(context).textTheme.labelLarge;
 
-    return Row(
-      children: [
-        Text(
-          title,
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-        const Spacer(),
-        SizedBox(
-          // height: 35,
-          child: FilledButton(
-            style: const ButtonStyle(
-              backgroundColor: MaterialStatePropertyAll(Colors.green),
-              visualDensity: VisualDensity.standard,
-            ),
-            onPressed: () {},
-            child: Text(
-              "More",
-              style: titleStyle?.copyWith(color: Colors.white),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 10, 10, 5),
+      child: Row(
+        children: [
+          Text(
+            title,
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          const Spacer(),
+          SizedBox(
+            // height: 35,
+            child: FilledButton(
+              style: const ButtonStyle(
+                backgroundColor: MaterialStatePropertyAll(Colors.green),
+                visualDensity: VisualDensity.standard,
+              ),
+              onPressed: () {},
+              child: Text(
+                "More",
+                style: titleStyle?.copyWith(color: Colors.white),
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
