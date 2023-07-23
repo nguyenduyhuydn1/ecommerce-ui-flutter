@@ -13,7 +13,7 @@ class AppTheme {
     brightness: Brightness.light,
     // colorSchemeSeed: Colors.green,
     primaryColor: Colors.green,
-    scaffoldBackgroundColor: Color.fromARGB(255, 243, 242, 242),
+    // scaffoldBackgroundColor: const Color.fromARGB(255, 243, 242, 242),
     // textTheme: TextTheme(
     //   bodyLarge: GoogleFonts.montserrat(color: Colors.green),
     // ),
