@@ -11,7 +11,7 @@ class AppTheme {
   static ThemeData lightTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
-    colorSchemeSeed: Colors.green,
+    // colorSchemeSeed: Colors.green,
     primaryColor: Colors.green,
     // scaffoldBackgroundColor: const Color(0xFFF9F8FD),
     // textTheme: TextTheme(
