@@ -15,7 +15,7 @@ class RegisterScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: Padding(
-        padding: EdgeInsets.all(30),
+        padding: const EdgeInsets.all(30),
         child: Column(
           children: [
             const Center(
@@ -44,7 +44,7 @@ class RegisterScreen extends StatelessWidget {
             CustomFilledButton(
               width: 250,
               height: 50,
-              text: "Register",
+              text: "Continue",
               onPressed: () {},
             ),
             const SizedBox(height: 40),

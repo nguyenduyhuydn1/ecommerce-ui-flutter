@@ -2,7 +2,7 @@ import 'package:ecommerce_ui_flutter/auth/presentation/screens/screens.dart';
 import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(
-  initialLocation: '/register',
+  initialLocation: '/complete_profile',
   routes: [
     GoRoute(
       path: '/login',
@@ -28,6 +28,12 @@ final appRouter = GoRouter(
       path: '/register',
       builder: (context, state) {
         return const RegisterScreen();
+      },
+    ),
+    GoRoute(
+      path: '/complete_profile',
+      builder: (context, state) {
+        return const CompleteProfileScreen();
       },
     ),
     GoRoute(
