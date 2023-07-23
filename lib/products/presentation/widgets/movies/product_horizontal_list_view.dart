@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 
 class ProductHorizontalListView extends StatelessWidget {
@@ -23,8 +24,10 @@ class ProductHorizontalListView extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             physics: const BouncingScrollPhysics(),
             itemBuilder: (context, index) {
-              return _Slide(
-                widthProduct: widthProduct,
+              return FadeInRight(
+                child: _Slide(
+                  widthProduct: widthProduct,
+                ),
               );
             },
           ),

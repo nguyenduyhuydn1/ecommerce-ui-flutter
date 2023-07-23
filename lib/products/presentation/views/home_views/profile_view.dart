@@ -71,7 +71,8 @@ class _ProfileMenu extends StatelessWidget {
             SvgPicture.asset(
               icon,
               width: 22,
-              colorFilter: const ColorFilter.mode(Colors.green, BlendMode.srcIn),
+              colorFilter:
+                  const ColorFilter.mode(Colors.green, BlendMode.srcIn),
             ),
             const SizedBox(width: 20),
             Expanded(child: Text(text)),
