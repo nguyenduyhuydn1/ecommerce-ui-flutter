@@ -18,8 +18,8 @@ class Email extends FormzInput<String, EmailError> {
   String? get errorMessage {
     if (isValid || isPure) return null;
 
-    if (displayError == EmailError.empty) return 'input is empty';
-    if (displayError == EmailError.format) return 'plssssssssssss';
+    if (displayError == EmailError.empty) return 'email is empty';
+    if (displayError == EmailError.format) return 'format is wrong';
 
     return null;
   }

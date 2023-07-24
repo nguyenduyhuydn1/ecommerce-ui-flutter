@@ -1,4 +1,5 @@
 class User {
+  final String id;
   final String fullname;
   final String email;
   final String password;
@@ -6,12 +7,10 @@ class User {
   final List<dynamic> wishLists;
   final bool isAdmin;
   final bool hasShippingAddress;
-  final String id;
-  final DateTime createdAt;
-  final DateTime updatedAt;
-  final int v;
+  final String token;
 
   User({
+    required this.id,
     required this.fullname,
     required this.email,
     required this.password,
@@ -19,13 +18,11 @@ class User {
     required this.wishLists,
     required this.isAdmin,
     required this.hasShippingAddress,
-    required this.id,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.v,
+    required this.token,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
+        id: json["_id"],
         fullname: json["fullname"],
         email: json["email"],
         password: json["password"],
@@ -33,13 +30,11 @@ class User {
         wishLists: List<dynamic>.from(json["wishLists"].map((x) => x)),
         isAdmin: json["isAdmin"],
         hasShippingAddress: json["hasShippingAddress"],
-        id: json["_id"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
-        v: json["__v"],
+        token: json["token"],
       );
 
   Map<String, dynamic> toJson() => {
+        "_id": id,
         "fullname": fullname,
         "email": email,
         "password": password,
@@ -47,9 +42,6 @@ class User {
         "wishLists": List<dynamic>.from(wishLists.map((x) => x)),
         "isAdmin": isAdmin,
         "hasShippingAddress": hasShippingAddress,
-        "_id": id,
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
-        "__v": v,
+        "token": token
       };
 }

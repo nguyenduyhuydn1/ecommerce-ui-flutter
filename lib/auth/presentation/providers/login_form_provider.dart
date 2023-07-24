@@ -2,22 +2,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
 
 import 'package:ecommerce_ui_flutter/shared/shared.dart';
+import 'package:ecommerce_ui_flutter/auth/presentation/providers/auth_provider.dart';
 
 final loginFormProvider =
     StateNotifierProvider.autoDispose<LoginFormNotifier, LoginFormState>((ref) {
-  // final loginUserCallback = ref.watch(authProvider.notifier).loginUser;
+  final loginUserCallback = ref.watch(authProvider.notifier).loginUser;
 
-  // return LoginFormNotifier(loginUserCallback: loginUserCallback);
-  return LoginFormNotifier();
+  return LoginFormNotifier(loginUserCallback: loginUserCallback);
 });
 
 class LoginFormNotifier extends StateNotifier<LoginFormState> {
-  // final Function(String, String) loginUserCallback;
+  final Function(String, String) loginUserCallback;
 
-  LoginFormNotifier(
-      // required this.loginUserCallback,
-      )
-      : super(LoginFormState());
+  LoginFormNotifier({
+    required this.loginUserCallback,
+  }) : super(LoginFormState());
 
   onEmailChange(String value) {
     final newEmail = Email.dirty(value);
@@ -45,7 +44,7 @@ class LoginFormNotifier extends StateNotifier<LoginFormState> {
     if (!state.isValid) return;
     state = state.copyWith(isPosting: true);
 
-    // await loginUserCallback(state.email.value, state.password.value);
+    await loginUserCallback(state.email.value, state.password.value);
     state = state.copyWith(isPosting: false);
   }
 
