@@ -26,6 +26,13 @@ class _HomeScreenState extends State<HomeScreen> {
     ProfileView()
   ];
 
+  final List<Widget> viewRoutesAdim = const [
+    HomeView(),
+    FavoritesView(),
+    // DashBoard(),
+    ProfileView()
+  ];
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

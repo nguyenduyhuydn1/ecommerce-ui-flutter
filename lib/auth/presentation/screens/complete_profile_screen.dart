@@ -31,25 +31,25 @@ class CompleteProfileScreen extends StatelessWidget {
               ),
               const SizedBox(height: 40),
               const CustomFormField(widgets: [
-                CustomTextField(
-                  hintText: "Enter your first name",
-                ),
-                CustomTextField(
-                  hintText: "Enter your last name",
-                ),
-                CustomTextField(
-                  hintText: "Re-enter your phone number",
-                ),
-                CustomTextField(
-                  hintText: "Re-enter your address",
-                ),
-                CustomTextField(
-                  hintText: "City",
-                ),
-                CustomTextField(
-                  hintText: "Postal code",
-                  borderBottom: false,
-                ),
+                // CustomTextField(
+                //   hintText: "Enter your first name",
+                // ),
+                // CustomTextField(
+                //   hintText: "Enter your last name",
+                // ),
+                // CustomTextField(
+                //   hintText: "Re-enter your phone number",
+                // ),
+                // CustomTextField(
+                //   hintText: "Re-enter your address",
+                // ),
+                // CustomTextField(
+                //   hintText: "City",
+                // ),
+                // CustomTextField(
+                //   hintText: "Postal code",
+                //   borderBottom: false,
+                // ),
               ]),
               const SizedBox(height: 70),
               CustomFilledButton(

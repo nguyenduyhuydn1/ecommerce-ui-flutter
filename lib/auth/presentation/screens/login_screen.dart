@@ -1,15 +1,18 @@
+import 'package:ecommerce_ui_flutter/auth/presentation/providers/providers.dart';
 import 'package:flutter/material.dart';
 
 import 'package:ecommerce_ui_flutter/auth/presentation/widgets/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  LoginScreenState createState() => LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class LoginScreenState extends ConsumerState<LoginScreen> {
   var temp = true;
   final List<Color> colors = [
     Colors.green,
@@ -20,6 +23,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final loginForm = ref.watch(loginFormProvider);
+
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -72,14 +77,22 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(height: 50),
 
                         //form text field
-                        const CustomFormField(widgets: [
+                        CustomFormField(widgets: [
                           CustomTextField(
-                            hintText: "Email or Phone number",
+                            keyboardType: TextInputType.emailAddress,
+                            onChanged: ref
+                                .read(loginFormProvider.notifier)
+                                .onEmailChange,
+                            hint: "Enter your email",
                           ),
                           CustomTextField(
-                            hintText: "Password",
+                            keyboardType: TextInputType.visiblePassword,
+                            onChanged: ref
+                                .read(loginFormProvider.notifier)
+                                .onPasswordChanged,
+                            hint: "Enter your password",
                             borderBottom: false,
-                          )
+                          ),
                         ]),
                         const SizedBox(height: 16),
 
@@ -98,17 +111,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
 
                         //Display Error
-                        temp
-                            ? const SizedBox(
+                        loginForm.isFormPosted
+                            ? SizedBox(
                                 height: 50,
                                 child: Column(
                                   children: [
                                     CustomDisplayError(
-                                      error: "error",
-                                    ),
+                                        error: loginForm.email.errorMessage),
+                                    const SizedBox(height: 5),
                                     CustomDisplayError(
-                                      error: "Error22",
-                                    ),
+                                        error: loginForm.password.errorMessage),
                                   ],
                                 ),
                               )
@@ -120,9 +132,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 50,
                           text: "Login",
                           onPressed: () {
-                            setState(() {
-                              temp = !temp;
-                            });
+                            loginForm.isPosting
+                                ? null
+                                : ref
+                                    .read(loginFormProvider.notifier)
+                                    .onFormSubmit();
                           },
                         ),
 
@@ -165,7 +179,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   fontSize: 16, color: Colors.grey[600]),
                             ),
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () => context.push('/register'),
                               child: const Text(
                                 "Sign Up",
                                 style: TextStyle(

@@ -4,7 +4,7 @@ import 'package:ecommerce_ui_flutter/auth/presentation/screens/screens.dart';
 import 'package:ecommerce_ui_flutter/products/presentation/screens/screens.dart';
 
 final appRouter = GoRouter(
-  initialLocation: '/home',
+  initialLocation: '/login',
   routes: [
     GoRoute(
       path: '/login',

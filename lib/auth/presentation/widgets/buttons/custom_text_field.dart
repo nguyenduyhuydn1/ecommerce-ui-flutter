@@ -2,12 +2,24 @@ import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
   final bool borderBottom;
-  final String hintText;
+  final String? hint;
+  final String? errorMessage;
+  final bool obscureText;
+  final TextInputType? keyboardType;
+  final Function(String)? onChanged;
+  final Function(String)? onFieldSubmitted;
+  final String? Function(String?)? validator;
 
   const CustomTextField({
     super.key,
     this.borderBottom = true,
-    required this.hintText,
+    this.hint,
+    this.errorMessage,
+    this.obscureText = false,
+    this.keyboardType = TextInputType.text,
+    this.onChanged,
+    this.onFieldSubmitted,
+    this.validator,
   });
 
   @override
@@ -20,10 +32,18 @@ class CustomTextField extends StatelessWidget {
               )
             : null,
       ),
-      child: TextField(
+      child: TextFormField(
+        onChanged: onChanged,
+        validator: validator,
+        onFieldSubmitted: onFieldSubmitted,
+        obscureText: obscureText,
+        keyboardType: keyboardType,
+        style: const TextStyle(fontSize: 20, color: Colors.black54),
         decoration: InputDecoration(
-          hintText: hintText,
+          // isDense: true,
+          hintText: hint,
           hintStyle: const TextStyle(color: Colors.grey),
+          errorText: errorMessage,
           border: InputBorder.none,
         ),
       ),

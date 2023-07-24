@@ -14,59 +14,61 @@ class RegisterScreen extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(30),
-        child: Column(
-          children: [
-            const Center(
-              child: Text(
-                "Register Account",
-                style: TextStyle(
-                    fontSize: 25,
-                    color: Colors.black54,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-            const SizedBox(height: 40),
-            const CustomFormField(widgets: [
-              CustomTextField(
-                hintText: "Enter your email",
-              ),
-              CustomTextField(
-                hintText: "Enter your password",
-              ),
-              CustomTextField(
-                hintText: "Re-enter your password",
-                borderBottom: false,
-              ),
-            ]),
-            const SizedBox(height: 70),
-            CustomFilledButton(
-              width: 250,
-              height: 50,
-              text: "Continue",
-              onPressed: () {},
-            ),
-            const SizedBox(height: 40),
-            //media social
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SocialButton(
-                  icon: 'assets/icons/google-icon.svg',
-                  onPressed: () {},
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(30),
+          child: Column(
+            children: [
+              const Center(
+                child: Text(
+                  "Register Account",
+                  style: TextStyle(
+                      fontSize: 25,
+                      color: Colors.black54,
+                      fontWeight: FontWeight.bold),
                 ),
-                SocialButton(
-                  icon: 'assets/icons/facebook-2.svg',
-                  onPressed: () {},
-                ),
-                SocialButton(
-                  icon: 'assets/icons/twitter.svg',
-                  onPressed: () {},
-                ),
-              ],
-            ),
-          ],
+              ),
+              const SizedBox(height: 40),
+              const CustomFormField(widgets: [
+                // CustomTextField(
+                //   hintText: "Enter your email",
+                // ),
+                // CustomTextField(
+                //   hintText: "Enter your password",
+                // ),
+                // CustomTextField(
+                //   hintText: "Re-enter your password",
+                //   borderBottom: false,
+                // ),
+              ]),
+              const SizedBox(height: 70),
+              CustomFilledButton(
+                width: 250,
+                height: 50,
+                text: "Continue",
+                onPressed: () {},
+              ),
+              const SizedBox(height: 40),
+              //media social
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SocialButton(
+                    icon: 'assets/icons/google-icon.svg',
+                    onPressed: () {},
+                  ),
+                  SocialButton(
+                    icon: 'assets/icons/facebook-2.svg',
+                    onPressed: () {},
+                  ),
+                  SocialButton(
+                    icon: 'assets/icons/twitter.svg',
+                    onPressed: () {},
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
