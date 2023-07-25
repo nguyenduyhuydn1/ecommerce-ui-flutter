@@ -1,3 +1,4 @@
+import 'package:ecommerce_ui_flutter/auth/presentation/providers/auth_provider.dart';
 import 'package:ecommerce_ui_flutter/auth/presentation/providers/providers.dart';
 import 'package:flutter/material.dart';
 
@@ -21,9 +22,20 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
     Colors.green[100]!,
   ];
 
+  void showSnackbar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
+  }
+
   @override
   Widget build(BuildContext context) {
     final loginForm = ref.watch(loginFormProvider);
+
+    ref.listen(authProvider, (previous, next) {
+      if (next.errorMessage.isEmpty) return;
+      showSnackbar(context, next.errorMessage);
+    });
 
     return Scaffold(
       body: Container(

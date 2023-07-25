@@ -1,27 +1,29 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:ecommerce_ui_flutter/auth/domain/auth_repository.dart';
 import 'package:ecommerce_ui_flutter/auth/domain/entities/user.dart';
 import 'package:ecommerce_ui_flutter/auth/infrastructure/datasources/auth_datasource_impl.dart';
 import 'package:ecommerce_ui_flutter/auth/infrastructure/errors/auth_errors.dart';
 import 'package:ecommerce_ui_flutter/auth/infrastructure/repositories/auth_repository_impl.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ecommerce_ui_flutter/shared/infrastructure/services/key_value_storage_service.dart';
+import 'package:ecommerce_ui_flutter/shared/infrastructure/services/key_value_storage_service_impl.dart';
 
 final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
   final authRepository = AuthRepositoryImpl(AuthDatasourceImpl());
-  // final keyValueStorageService = KeyValueStorageServiceImpl();
+  final keyValueStorageService = KeyValueStorageServiceImpl();
 
   return AuthNotifier(
-    authRepository: authRepository,
-    // keyValueStorageService: keyValueStorageService
-  );
+      authRepository: authRepository,
+      keyValueStorageService: keyValueStorageService);
 });
 
 class AuthNotifier extends StateNotifier<AuthState> {
   final AuthRepository authRepository;
-  // final KeyValueStorageService keyValueStorageService;
+  final KeyValueStorageService keyValueStorageService;
 
   AuthNotifier({
     required this.authRepository,
-    // required this.keyValueStorageService,
+    required this.keyValueStorageService,
   }) : super(AuthState()) {
     checkAuthStatus();
   }
@@ -42,29 +44,29 @@ class AuthNotifier extends StateNotifier<AuthState> {
   void registerUser(String email, String password) async {}
 
   void checkAuthStatus() async {
-    // final token = await keyValueStorageService.getValue<String>('token');
-    // if (token == null) return logout();
+    final token = await keyValueStorageService.getValue<String>('token');
+    if (token == null) return logout();
 
-    // try {
-    //   final user = await authRepository.checkAuthStatus(token);
-    //   _setLoggedUser(user);
-    // } catch (e) {
-    //   logout();
-    // }
+    try {
+      final user = await authRepository.checkAuthStatus(token);
+      _setLoggedUser(user);
+    } catch (e) {
+      logout();
+    }
   }
 
   void _setLoggedUser(User user) async {
-    // await keyValueStorageService.setKeyValue('token', user.token);
+    await keyValueStorageService.setKeyValue('token', user.token);
 
     state = state.copyWith(
       user: user,
       authStatus: AuthStatus.authenticated,
-      errorMessage: '',
+      errorMessage: user.message,
     );
   }
 
   Future<void> logout([String? errorMessage]) async {
-    // await keyValueStorageService.removeKey('token');
+    await keyValueStorageService.removeKey('token');
 
     state = state.copyWith(
       authStatus: AuthStatus.notAuthenticated,

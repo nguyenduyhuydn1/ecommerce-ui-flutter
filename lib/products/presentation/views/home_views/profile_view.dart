@@ -1,11 +1,13 @@
+import 'package:ecommerce_ui_flutter/auth/presentation/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class ProfileView extends StatelessWidget {
+class ProfileView extends ConsumerWidget {
   const ProfileView({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -36,7 +38,9 @@ class ProfileView extends StatelessWidget {
         _ProfileMenu(
           text: "Log Out",
           icon: "assets/icons/Log out.svg",
-          onPressed: () {},
+          onPressed: () {
+            ref.read(authProvider.notifier).logout();
+          },
         ),
       ],
     );

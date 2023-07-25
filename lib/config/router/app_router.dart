@@ -1,11 +1,18 @@
+import 'package:ecommerce_ui_flutter/auth/presentation/screens/check_auth_status_screen.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:ecommerce_ui_flutter/auth/presentation/screens/screens.dart';
 import 'package:ecommerce_ui_flutter/products/presentation/screens/screens.dart';
 
 final appRouter = GoRouter(
-  initialLocation: '/login',
+  initialLocation: '/splash',
   routes: [
+    GoRoute(
+      path: '/splash',
+      builder: (context, state) {
+        return const CheckAuthStatusScreen();
+      },
+    ),
     GoRoute(
       path: '/login',
       // name: HomeScreen.name,
@@ -37,7 +44,7 @@ final appRouter = GoRouter(
       },
     ),
     GoRoute(
-      path: '/home',
+      path: '/',
       builder: (context, state) {
         // final pageIndex = int.parse(state.pathParameters['page'] ?? '0');
         return const HomeScreen();
@@ -45,7 +52,7 @@ final appRouter = GoRouter(
     ),
     GoRoute(
       path: '/',
-      redirect: (_, __) => '/home',
+      redirect: (_, __) => '/',
     ),
   ],
 );

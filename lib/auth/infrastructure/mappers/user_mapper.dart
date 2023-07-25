@@ -11,5 +11,6 @@ class UserMapper {
         hasShippingAddress: json["hasShippingAddress"],
         id: json["_id"],
         token: json["token"],
+        message: json["message"],
       );
 }

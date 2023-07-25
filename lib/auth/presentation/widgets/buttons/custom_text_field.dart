@@ -38,7 +38,7 @@ class CustomTextField extends StatelessWidget {
         onFieldSubmitted: onFieldSubmitted,
         obscureText: obscureText,
         keyboardType: keyboardType,
-        style: const TextStyle(fontSize: 20, color: Colors.black54),
+        style: const TextStyle(fontSize: 17, color: Colors.black54),
         decoration: InputDecoration(
           // isDense: true,
           hintText: hint,

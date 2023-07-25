@@ -8,6 +8,7 @@ class User {
   final bool isAdmin;
   final bool hasShippingAddress;
   final String token;
+  final String message;
 
   User({
     required this.id,
@@ -19,6 +20,7 @@ class User {
     required this.isAdmin,
     required this.hasShippingAddress,
     required this.token,
+    required this.message,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -31,6 +33,7 @@ class User {
         isAdmin: json["isAdmin"],
         hasShippingAddress: json["hasShippingAddress"],
         token: json["token"],
+        message: json["message"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -42,6 +45,7 @@ class User {
         "wishLists": List<dynamic>.from(wishLists.map((x) => x)),
         "isAdmin": isAdmin,
         "hasShippingAddress": hasShippingAddress,
-        "token": token
+        "token": token,
+        "message": message,
       };
 }

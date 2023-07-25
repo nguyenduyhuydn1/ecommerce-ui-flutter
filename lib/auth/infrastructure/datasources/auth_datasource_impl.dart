@@ -14,8 +14,22 @@ class AuthDatasourceImpl extends AuthDataSource {
   );
 
   @override
-  Future<User> checkAuthStatus(String token) {
-    throw UnimplementedError();
+  Future<User> checkAuthStatus(String token) async {
+    try {
+      final res = await dio.get('/users/profile',
+          options: Options(headers: {'Authorization': 'Bearer $token'}));
+
+      res.data['user']['message'] = res.data['message'];
+      final user = UserMapper.userJsonToEntity(res.data['user']);
+      return user;
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 500) {
+        throw CustomError(e.response?.data["message"]);
+      }
+      throw Exception();
+    } catch (e) {
+      throw Exception();
+    }
   }
 
   @override
@@ -27,7 +41,7 @@ class AuthDatasourceImpl extends AuthDataSource {
       );
 
       res.data['user']['token'] = res.data['token'];
-
+      res.data['user']['message'] = res.data['message'];
       final user = UserMapper.userJsonToEntity(res.data['user']);
 
       return user;
