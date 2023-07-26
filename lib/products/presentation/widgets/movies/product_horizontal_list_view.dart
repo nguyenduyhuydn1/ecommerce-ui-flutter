@@ -1,15 +1,18 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:ecommerce_ui_flutter/products/domain/entities/product.dart';
 import 'package:flutter/material.dart';
 
 class ProductHorizontalListView extends StatelessWidget {
   final double widthProduct;
   final String title;
   final double height;
+  final List<Product> products;
   const ProductHorizontalListView({
     super.key,
     this.widthProduct = 0.4,
     required this.title,
     required this.height,
+    required this.products,
   });
 
   @override
@@ -20,13 +23,14 @@ class ProductHorizontalListView extends StatelessWidget {
         SizedBox(
           height: height,
           child: ListView.builder(
-            itemCount: 5,
+            itemCount: products.length,
             scrollDirection: Axis.horizontal,
             physics: const BouncingScrollPhysics(),
             itemBuilder: (context, index) {
               return FadeInRight(
                 child: _Slide(
                   widthProduct: widthProduct,
+                  product: products[index],
                 ),
               );
             },
@@ -39,13 +43,17 @@ class ProductHorizontalListView extends StatelessWidget {
 
 class _Slide extends StatelessWidget {
   final double widthProduct;
-  const _Slide({required this.widthProduct});
+  final Product product;
+  const _Slide({
+    required this.widthProduct,
+    required this.product,
+  });
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final textStyle = Theme.of(context).textTheme;
-
+    final height = widthProduct == 0.4 ? 0.2 : 0.3;
     return Container(
       margin: const EdgeInsets.fromLTRB(12, 0, 12, 30),
       child: Column(
@@ -68,9 +76,10 @@ class _Slide extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               child: Column(
                 children: [
-                  Image.asset(
-                    'assets/images/1.jpg',
+                  Image.network(
+                    product.images[0],
                     fit: BoxFit.cover,
+                    height: size.height * height,
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
@@ -80,12 +89,12 @@ class _Slide extends StatelessWidget {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: "Shirt 2\n".toUpperCase(),
+                                text: "${product.name} \n".toUpperCase(),
                                 style: textStyle.titleMedium
                                     ?.copyWith(fontSize: 17),
                               ),
                               TextSpan(
-                                text: "Guci",
+                                text: product.brand,
                                 style: textStyle.titleMedium?.copyWith(
                                   fontSize: 17,
                                   color: Colors.green,
@@ -95,9 +104,10 @@ class _Slide extends StatelessWidget {
                           ),
                         ),
                         const Spacer(),
-                        const Text(
-                          "\$50",
-                          style: TextStyle(color: Colors.green, fontSize: 20),
+                        Text(
+                          "\$ ${product.price}",
+                          style: const TextStyle(
+                              color: Colors.green, fontSize: 20),
                         )
                       ],
                     ),
