@@ -1,8 +1,10 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:ecommerce_ui_flutter/products/domain/entities/product.dart';
+import 'package:ecommerce_ui_flutter/products/presentation/providers/products_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ProductHorizontalListView extends StatelessWidget {
+class ProductHorizontalListView extends ConsumerStatefulWidget {
   final double widthProduct;
   final String title;
   final double height;
@@ -16,21 +18,49 @@ class ProductHorizontalListView extends StatelessWidget {
   });
 
   @override
+  ProductHorizontalListViewState createState() =>
+      ProductHorizontalListViewState();
+}
+
+class ProductHorizontalListViewState
+    extends ConsumerState<ProductHorizontalListView> {
+  final ScrollController scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    scrollController.addListener(() {
+      if ((scrollController.position.pixels + 200) >=
+          scrollController.position.maxScrollExtent) {
+        ref.read(productsProvider.notifier).loadNextPage();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _Title(title: title),
+        _Title(title: widget.title),
         SizedBox(
-          height: height,
+          height: widget.height,
           child: ListView.builder(
-            itemCount: products.length,
+            controller: scrollController,
+            itemCount: widget.products.length,
             scrollDirection: Axis.horizontal,
             physics: const BouncingScrollPhysics(),
             itemBuilder: (context, index) {
               return FadeInRight(
                 child: _Slide(
-                  widthProduct: widthProduct,
-                  product: products[index],
+                  widthProduct: widget.widthProduct,
+                  product: widget.products[index],
                 ),
               );
             },
@@ -76,10 +106,26 @@ class _Slide extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               child: Column(
                 children: [
-                  Image.network(
-                    product.images[0],
-                    fit: BoxFit.cover,
+                  // Image.network(
+                  //   product.images[0],
+                  //   fit: BoxFit.cover,
+                  //   height: size.height * height,
+                  //   loadingBuilder: (context, child, loadingProgress) {
+                  //     if (loadingProgress != null) {
+                  //       return const Center(
+                  //         child: CircularProgressIndicator(
+                  //           strokeWidth: 10,
+                  //         ),
+                  //       );
+                  //     }
+                  //     return FadeIn(child: child);
+                  //   },
+                  // ),
+                  FadeInImage(
                     height: size.height * height,
+                    fit: BoxFit.cover,
+                    placeholder: const AssetImage('assets/1.gif'),
+                    image: NetworkImage(product.images[0]),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),

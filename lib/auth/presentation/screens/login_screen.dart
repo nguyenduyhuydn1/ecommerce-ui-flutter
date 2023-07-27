@@ -1,4 +1,3 @@
-import 'package:ecommerce_ui_flutter/auth/presentation/providers/auth_provider.dart';
 import 'package:ecommerce_ui_flutter/auth/presentation/providers/providers.dart';
 import 'package:flutter/material.dart';
 
