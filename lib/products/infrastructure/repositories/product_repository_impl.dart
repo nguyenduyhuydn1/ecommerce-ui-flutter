@@ -22,7 +22,7 @@ class ProductRepositoryImpl extends ProductRepository {
   }
 
   @override
-  Future<List<Product>> searchProductByTerm(String term) {
-    return datasource.searchProductByTerm(term);
+  Future<List<Product>> searchProductByTerm(String query) {
+    return datasource.searchProductByTerm(query);
   }
 }
