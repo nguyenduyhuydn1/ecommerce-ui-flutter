@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:animate_do/animate_do.dart';
 import 'package:ecommerce_ui_flutter/products/domain/domain.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class SearchProductDelegates extends SearchDelegate {
   final Future<List<Product>> Function(String query) searchQuery;
@@ -129,7 +130,7 @@ class _ProductItem extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        // context.push('/movie/${item.id}');
+        context.push('/prodcut/${item.id}');
         onProductSelected(context, item);
       },
       child: Padding(
@@ -157,30 +158,47 @@ class _ProductItem extends StatelessWidget {
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(top: 10),
-                    child: RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: "${item.name} \n".toUpperCase(),
-                            style:
-                                textStyle.titleMedium?.copyWith(fontSize: 17),
-                          ),
-                          TextSpan(
-                            text: item.brand,
-                            style: textStyle.titleMedium?.copyWith(
-                              fontSize: 17,
-                              color: Colors.green,
-                            ),
-                          ),
-                        ],
+                    child: Text(
+                      "${item.name} \n".toUpperCase(),
+                      style: textStyle.titleMedium?.copyWith(
+                        fontSize: 15,
                       ),
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+
+                    //  RichText(
+                    //   text: TextSpan(
+                    //     children: [
+                    //       TextSpan(
+                    //         text: "${item.name} \n".toUpperCase(),
+                    //         style:
+                    //             textStyle.titleMedium?.copyWith(fontSize: 17),
+                    //       ),
+                    //       TextSpan(
+                    //         text: item.brand,
+                    //         style: textStyle.titleMedium?.copyWith(
+                    //           fontSize: 17,
+                    //           color: Colors.green,
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                  ),
+                  Text(
+                    item.brand,
+                    style: textStyle.titleMedium?.copyWith(
+                      fontSize: 17,
+                      color: Colors.green,
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 20),
+                    padding: const EdgeInsets.only(top: 5),
                     child: Text('\$${item.price}',
                         style: textStyle.titleMedium?.copyWith(
                           fontSize: 17,

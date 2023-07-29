@@ -4,6 +4,7 @@ import 'package:ecommerce_ui_flutter/products/presentation/providers/products_pr
 import 'package:ecommerce_ui_flutter/products/presentation/views/custom_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class ProductHorizontalListView extends ConsumerStatefulWidget {
   final double widthProduct;
@@ -85,78 +86,83 @@ class _Slide extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final textStyle = Theme.of(context).textTheme;
     final height = widthProduct == 0.4 ? 0.2 : 0.3;
-    return Container(
-      margin: const EdgeInsets.fromLTRB(12, 0, 12, 30),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.green[50]!,
-                  blurRadius: 20,
-                  offset: const Offset(0, 10),
-                ),
-              ],
-            ),
-            width: size.width * widthProduct,
-            child: Column(
-              children: [
-                Image.network(
-                  product.images[0],
-                  height: size.height * height,
-                  fit: BoxFit.cover,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress != null) {
-                      return CustomShimmer(
-                        height: size.height * height,
-                        width: double.infinity,
-                      );
-                    }
-                    return FadeIn(child: child);
-                  },
-                ),
-                // FadeInImage(
-                //   height: size.height * height,
-                //   fit: BoxFit.cover,
-                //   placeholder: const AssetImage('assets/1.gif'),
-                //   image: NetworkImage(product.images[0]),
-                // ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "${product.name} \n".toUpperCase(),
-                        style: textStyle.titleMedium?.copyWith(
-                          fontSize: 15,
-                        ),
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Text(
-                        product.brand,
-                        style: textStyle.titleMedium?.copyWith(
-                          fontSize: 17,
-                          color: Colors.green,
-                        ),
-                      ),
-                      Text(
-                        "\$${product.price}",
-                        style:
-                            const TextStyle(color: Colors.green, fontSize: 20),
-                      )
-                    ],
+    return GestureDetector(
+      onTap: () {
+        context.push('/product/${product.id}');
+      },
+      child: Container(
+        margin: const EdgeInsets.fromLTRB(12, 0, 12, 30),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.green[50]!,
+                    blurRadius: 20,
+                    offset: const Offset(0, 10),
                   ),
-                ),
-              ],
+                ],
+              ),
+              width: size.width * widthProduct,
+              child: Column(
+                children: [
+                  Image.network(
+                    product.images[0],
+                    height: size.height * height,
+                    fit: BoxFit.cover,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress != null) {
+                        return CustomShimmer(
+                          height: size.height * height,
+                          width: double.infinity,
+                        );
+                      }
+                      return FadeIn(child: child);
+                    },
+                  ),
+                  // FadeInImage(
+                  //   height: size.height * height,
+                  //   fit: BoxFit.cover,
+                  //   placeholder: const AssetImage('assets/1.gif'),
+                  //   image: NetworkImage(product.images[0]),
+                  // ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "${product.name} \n".toUpperCase(),
+                          style: textStyle.titleMedium?.copyWith(
+                            fontSize: 15,
+                          ),
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          product.brand,
+                          style: textStyle.titleMedium?.copyWith(
+                            fontSize: 17,
+                            color: Colors.green,
+                          ),
+                        ),
+                        Text(
+                          "\$${product.price}",
+                          style: const TextStyle(
+                              color: Colors.green, fontSize: 20),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

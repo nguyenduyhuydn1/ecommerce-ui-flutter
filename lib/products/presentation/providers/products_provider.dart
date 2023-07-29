@@ -61,6 +61,11 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
         page: state.page + 1,
         products: [...state.products, ...products]);
   }
+
+  // Product getSingleProduct(String productId) {
+  //   final product = state.products.firstWhere((e) => e.id == productId);
+  //   return product;
+  // }
 }
 
 class ProductsState {

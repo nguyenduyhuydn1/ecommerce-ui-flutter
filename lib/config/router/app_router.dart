@@ -50,12 +50,23 @@ final goRouterProvider = Provider((ref) {
         },
       ),
       GoRoute(
-        path: '/',
-        builder: (context, state) {
-          // final pageIndex = int.parse(state.pathParameters['page'] ?? '0');
-          return const HomeScreen();
-        },
-      ),
+          path: '/',
+          builder: (context, state) {
+            // final pageIndex = int.parse(state.pathParameters['page'] ?? '0');
+            return const HomeScreen();
+          },
+          routes: [
+            GoRoute(
+              path: 'product/:id',
+              builder: (context, state) {
+                final productId = state.pathParameters['id'] ?? 'no-id';
+
+                return ProductScreen(
+                  productId: productId,
+                );
+              },
+            ),
+          ]),
       GoRoute(
         path: '/',
         redirect: (_, __) => '/',
