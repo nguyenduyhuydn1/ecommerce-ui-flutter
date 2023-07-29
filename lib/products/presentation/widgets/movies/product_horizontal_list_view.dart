@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:ecommerce_ui_flutter/products/domain/entities/product.dart';
 import 'package:ecommerce_ui_flutter/products/presentation/providers/products_provider.dart';
+import 'package:ecommerce_ui_flutter/products/presentation/views/custom_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -102,64 +103,57 @@ class _Slide extends StatelessWidget {
               ],
             ),
             width: size.width * widthProduct,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Column(
-                children: [
-                  // Image.network(
-                  //   product.images[0],
-                  //   fit: BoxFit.cover,
-                  //   height: size.height * height,
-                  //   loadingBuilder: (context, child, loadingProgress) {
-                  //     if (loadingProgress != null) {
-                  //       return const Center(
-                  //         child: CircularProgressIndicator(
-                  //           strokeWidth: 10,
-                  //         ),
-                  //       );
-                  //     }
-                  //     return FadeIn(child: child);
-                  //   },
-                  // ),
-                  FadeInImage(
-                    height: size.height * height,
-                    fit: BoxFit.cover,
-                    placeholder: const AssetImage('assets/1.gif'),
-                    image: NetworkImage(product.images[0]),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                    child: Row(
-                      children: [
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: "${product.name} \n".toUpperCase(),
-                                style: textStyle.titleMedium
-                                    ?.copyWith(fontSize: 17),
-                              ),
-                              TextSpan(
-                                text: product.brand,
-                                style: textStyle.titleMedium?.copyWith(
-                                  fontSize: 17,
-                                  color: Colors.green,
-                                ),
-                              ),
-                            ],
-                          ),
+            child: Column(
+              children: [
+                Image.network(
+                  product.images[0],
+                  height: size.height * height,
+                  fit: BoxFit.cover,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress != null) {
+                      return CustomShimmer(
+                        height: size.height * height,
+                        width: double.infinity,
+                      );
+                    }
+                    return FadeIn(child: child);
+                  },
+                ),
+                // FadeInImage(
+                //   height: size.height * height,
+                //   fit: BoxFit.cover,
+                //   placeholder: const AssetImage('assets/1.gif'),
+                //   image: NetworkImage(product.images[0]),
+                // ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "${product.name} \n".toUpperCase(),
+                        style: textStyle.titleMedium?.copyWith(
+                          fontSize: 15,
                         ),
-                        const Spacer(),
-                        Text(
-                          "\$ ${product.price}",
-                          style: const TextStyle(
-                              color: Colors.green, fontSize: 20),
-                        )
-                      ],
-                    ),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        product.brand,
+                        style: textStyle.titleMedium?.copyWith(
+                          fontSize: 17,
+                          color: Colors.green,
+                        ),
+                      ),
+                      Text(
+                        "\$${product.price}",
+                        style:
+                            const TextStyle(color: Colors.green, fontSize: 20),
+                      )
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],

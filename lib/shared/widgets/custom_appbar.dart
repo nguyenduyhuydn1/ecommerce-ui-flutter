@@ -1,4 +1,3 @@
-import 'package:ecommerce_ui_flutter/products/domain/domain.dart';
 import 'package:ecommerce_ui_flutter/products/presentation/delegates/search_product_delegates.dart';
 import 'package:ecommerce_ui_flutter/products/presentation/providers/searchs/search_product_provider.dart';
 import 'package:flutter/material.dart';

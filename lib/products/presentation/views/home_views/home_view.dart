@@ -42,20 +42,20 @@ class HomeViewState extends ConsumerState<HomeView> {
                 children: [
                   ProductHorizontalListView(
                     title: "Recomended",
-                    height: 280,
+                    height: 340,
                     products: productsState.products,
                   ),
                   ProductHorizontalListView(
                     widthProduct: 0.7,
-                    title: "Recomended",
-                    height: 380,
+                    title: "New",
+                    height: 430,
                     products: productsState.products,
                   ),
                   ProductHorizontalListView(
                     widthProduct: 0.7,
-                    title: "Recomended",
+                    title: "Popular",
                     products: productsState.products,
-                    height: 380,
+                    height: 430,
                   ),
                 ],
               );
