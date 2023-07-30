@@ -1,8 +1,8 @@
-import 'package:ecommerce_ui_flutter/products/domain/repositories/product_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:ecommerce_ui_flutter/products/domain/repositories/product_repository.dart';
 import 'package:ecommerce_ui_flutter/products/domain/entities/product.dart';
-import 'package:ecommerce_ui_flutter/products/presentation/providers/products_repositories_provider.dart';
+import 'package:ecommerce_ui_flutter/products/presentation/providers/providers.dart';
 
 final productsProvider =
     StateNotifierProvider<ProductsNotifier, ProductsState>((ref) {

@@ -1,10 +1,12 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:ecommerce_ui_flutter/products/domain/entities/product.dart';
-import 'package:ecommerce_ui_flutter/products/presentation/providers/products_provider.dart';
-import 'package:ecommerce_ui_flutter/products/presentation/views/custom_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
+
+import 'package:ecommerce_ui_flutter/products/domain/entities/product.dart';
+import 'package:ecommerce_ui_flutter/products/presentation/providers/providers.dart';
+import 'package:ecommerce_ui_flutter/products/presentation/views/custom_shimmer.dart';
 
 class ProductHorizontalListView extends ConsumerStatefulWidget {
   final double widthProduct;
@@ -86,6 +88,10 @@ class _Slide extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final textStyle = Theme.of(context).textTheme;
     final height = widthProduct == 0.4 ? 0.2 : 0.3;
+
+    var price =
+        NumberFormat.simpleCurrency(decimalDigits: 0).format(product.price);
+
     return GestureDetector(
       onTap: () {
         context.push('/product/${product.id}');
@@ -151,7 +157,7 @@ class _Slide extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "\$${product.price}",
+                          price,
                           style: const TextStyle(
                               color: Colors.green, fontSize: 20),
                         )

@@ -130,7 +130,7 @@ class _ProductItem extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        context.push('/prodcut/${item.id}');
+        context.push('/product/${item.id}');
         onProductSelected(context, item);
       },
       child: Padding(

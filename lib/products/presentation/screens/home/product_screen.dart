@@ -1,9 +1,11 @@
-import 'package:animate_do/animate_do.dart';
-import 'package:ecommerce_ui_flutter/products/domain/domain.dart';
-import 'package:ecommerce_ui_flutter/products/presentation/providers/product_detail_provider.dart';
-import 'package:ecommerce_ui_flutter/products/presentation/views/custom_shimmer.dart';
+import 'package:ecommerce_ui_flutter/products/presentation/providers/storage/carts_product_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
+
+import 'package:ecommerce_ui_flutter/products/domain/domain.dart';
+import 'package:ecommerce_ui_flutter/products/presentation/providers/providers.dart';
+import 'package:ecommerce_ui_flutter/products/presentation/views/custom_shimmer.dart';
 
 class ProductScreen extends ConsumerStatefulWidget {
   final String productId;
@@ -21,10 +23,14 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
   }
 
   int count = 0;
+  bool seeMore = true;
 
   @override
   Widget build(BuildContext context) {
     final Product? product = ref.watch(productDetailProvider)[widget.productId];
+    final favorites = ref.watch(favoritesProvider);
+    final checkFavorite = favorites.indexWhere((e) => e.id == widget.productId);
+
     final size = MediaQuery.of(context).size;
 
     if (product == null) return _ShimmerDetail(size: size);
@@ -36,34 +42,122 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                // Icons.favorite_outline,
-                Icons.favorite_outlined,
-                color: Colors.red,
-              ),
+              onPressed: () async {
+                // await ref
+                //     .read(favoritesProvider.notifier)
+                //     .toggleFavorite(product);
+                await ref.read(cartsProvider.notifier).addToCarts(product);
+              },
+              icon: checkFavorite != -1
+                  ? const Icon(
+                      Icons.favorite_outlined,
+                      color: Colors.red,
+                    )
+                  : const Icon(
+                      Icons.favorite_outline,
+                    ),
             ),
           )
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.network(
-                  product.images[count],
-                  width: size.width * 0.7,
-                  fit: BoxFit.cover,
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            listImages(product, size)
-          ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.network(
+                    product.images[count],
+                    width: size.width * 0.7,
+                    fit: BoxFit.cover,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              listImages(product, size),
+              const SizedBox(height: 20),
+              _SizeSelector(
+                selectedSizes: product.sizes,
+                onSizesChanged: (selectedSizes) {},
+              ),
+              const SizedBox(height: 20),
+              descriptionProduct(product),
+              const SizedBox(height: 200),
+            ],
+          ),
         ),
+      ),
+    );
+  }
+
+  Container descriptionProduct(Product product) {
+    var price =
+        NumberFormat.simpleCurrency(decimalDigits: 0).format(product.price);
+    return Container(
+      color: const Color.fromARGB(255, 235, 233, 233),
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              product.name,
+              style: const TextStyle(fontSize: 18),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              price,
+              style: const TextStyle(fontSize: 18),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              product.description,
+              style: const TextStyle(fontSize: 15),
+              maxLines: seeMore ? 8 : null,
+              overflow: seeMore ? TextOverflow.ellipsis : null,
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              setState(() {
+                seeMore = !seeMore;
+              });
+            },
+            child: seeMore
+                ? const Text(
+                    "See More ...",
+                    style: TextStyle(fontSize: 17),
+                  )
+                : const Text(
+                    "See Less",
+                    style: TextStyle(fontSize: 17),
+                  ),
+          ),
+          // Directionality(
+          //   textDirection: TextDirection.rtl,
+          //   child: TextButton.icon(
+          //     onPressed: () {
+          //       setState(() {
+          //         seeMore = !seeMore;
+          //       });
+          //     },
+          //     icon: const Icon(
+          //       Icons.arrow_back_ios,
+          //       size: 15,
+          //     ),
+          //     label: seeMore
+          //         ? const Text("See More")
+          //         : const Text("See Less"),
+          //   ),
+          // ),
+        ],
       ),
     );
   }
@@ -96,19 +190,147 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
-                child: Image.network(
-                  product.images[index],
+                child: FadeInImage(
                   fit: BoxFit.cover,
-                  width: size.width * 0.15,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    return FadeIn(child: child);
-                  },
+                  image: NetworkImage(product.images[index]),
+                  placeholder: const AssetImage('assets/1.gif'),
                 ),
+
+                // Image.network(
+                //   product.images[index],
+                //   fit: BoxFit.cover,
+                //   width: size.width * 0.15,
+                //   loadingBuilder: (context, child, loadingProgress) {
+                //     return FadeIn(child: child);
+                //   },
+                // ),
               ),
             ),
           );
         },
       ),
+    );
+  }
+}
+
+// class _ProductInformation extends ConsumerWidget {
+//   final Product product;
+//   const _ProductInformation({required this.product});
+
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref ) {
+
+//     final productForm = ref.watch( productFormProvider(product) );
+
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(horizontal: 20),
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           const Text('Generales'),
+//           const SizedBox(height: 15 ),
+//           CustomProductField(
+//             isTopField: true,
+//             label: 'Nombre',
+//             initialValue: productForm.title.value,
+//             onChanged: ref.read( productFormProvider(product).notifier).onTitleChanged,
+//             errorMessage: productForm.title.errorMessage,
+//           ),
+
+//           CustomProductField(
+//             label: 'Slug',
+//             initialValue: productForm.slug.value,
+//             onChanged: ref.read( productFormProvider(product).notifier).onSlugChanged,
+//             errorMessage: productForm.slug.errorMessage,
+//           ),
+
+//           CustomProductField(
+//             isBottomField: true,
+//             label: 'Precio',
+//             keyboardType: const TextInputType.numberWithOptions(decimal: true),
+//             initialValue: productForm.price.value.toString(),
+//             onChanged: (value)
+//               => ref.read( productFormProvider(product).notifier)
+//                 .onPriceChanged( double.tryParse(value) ?? -1 ),
+//             errorMessage: productForm.price.errorMessage,
+//           ),
+
+//           const SizedBox(height: 15 ),
+//           const Text('Extras'),
+
+//           _SizeSelector(
+//             selectedSizes: productForm.sizes,
+//             onSizesChanged: ref.read( productFormProvider(product).notifier).onSizeChanged,
+//           ),
+//           const SizedBox(height: 5 ),
+//           _GenderSelector(
+//             selectedGender: productForm.gender,
+//             onGenderChanged: ref.read( productFormProvider(product).notifier).onGenderChanged,
+//           ),
+
+//           const SizedBox(height: 15 ),
+//           CustomProductField(
+//             isTopField: true,
+//             label: 'Existencias',
+//             keyboardType: const TextInputType.numberWithOptions(decimal: true),
+//             initialValue: productForm.inStock.value.toString(),
+//             onChanged: ( value )
+//               => ref.read( productFormProvider(product).notifier)
+//                 .onStockChanged( int.tryParse(value) ?? -1 ),
+//             errorMessage: productForm.inStock.errorMessage,
+//           ),
+
+//           CustomProductField(
+//             maxLines: 6,
+//             label: 'Descripción',
+//             keyboardType: TextInputType.multiline,
+//             initialValue: product.description,
+//             onChanged: ref.read( productFormProvider(product).notifier).onDescriptionChanged,
+//           ),
+
+//           CustomProductField(
+//             isBottomField: true,
+//             maxLines: 2,
+//             label: 'Tags (Separados por coma)',
+//             keyboardType: TextInputType.multiline,
+//             initialValue: product.tags.join(', '),
+//             onChanged: ref.read( productFormProvider(product).notifier).onTagsChanged,
+//           ),
+
+//           const SizedBox(height: 100 ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+class _SizeSelector extends StatelessWidget {
+  final List<dynamic> selectedSizes;
+  final List<dynamic> sizes = const ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
+
+  final void Function(List<dynamic> selectedSizes) onSizesChanged;
+
+  const _SizeSelector({
+    required this.selectedSizes,
+    required this.onSizesChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SegmentedButton(
+      emptySelectionAllowed: true,
+      showSelectedIcon: false,
+      segments: sizes
+          .map((size) => ButtonSegment(
+              value: size,
+              label: Text(size, style: const TextStyle(fontSize: 10))))
+          .toList(),
+      selected: Set.from(selectedSizes),
+      onSelectionChanged: (newSelection) {
+        FocusScope.of(context).unfocus();
+        onSizesChanged(List.from(newSelection));
+      },
+      multiSelectionEnabled: true,
     );
   }
 }

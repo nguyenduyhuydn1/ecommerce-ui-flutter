@@ -56,6 +56,7 @@ class Product {
   final int totalReviews;
   final int averageRating;
   final String productId;
+  late int? qty;
 
   Product({
     required this.id,

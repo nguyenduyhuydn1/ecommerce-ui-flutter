@@ -47,4 +47,11 @@ class KeyValueStorageServiceImpl extends KeyValueStorageService {
             'Set not implemented for type ${T.runtimeType}');
     }
   }
+
+  @override
+  Future<bool> checkKeyExists(String key) async {
+    final prefs = await getSharedPrefs();
+    final bool checkKey = prefs.containsKey(key);
+    return checkKey;
+  }
 }

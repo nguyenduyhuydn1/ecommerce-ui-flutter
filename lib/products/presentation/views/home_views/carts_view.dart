@@ -1,19 +1,35 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:ecommerce_ui_flutter/products/domain/domain.dart';
+import 'package:ecommerce_ui_flutter/products/presentation/providers/storage/carts_product_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 
-class CartsView extends StatefulWidget {
+class CartsView extends ConsumerStatefulWidget {
   const CartsView({super.key});
 
   @override
-  State<CartsView> createState() => _CartsViewState();
+  CartsViewState createState() => CartsViewState();
 }
 
-class _CartsViewState extends State<CartsView> {
-  int count = 140;
+class CartsViewState extends ConsumerState {
+  @override
+  void initState() {
+    super.initState();
+    ref.read(cartsProvider.notifier).getDataCarts();
+  }
 
   @override
   Widget build(BuildContext context) {
+    var carts = ref.watch(cartsProvider);
+
+    if (carts.isEmpty) {
+      return const Center(
+        child: Text("null"),
+      );
+    }
+
     return CustomScrollView(
       physics: const ClampingScrollPhysics(),
       slivers: [
@@ -27,15 +43,17 @@ class _CartsViewState extends State<CartsView> {
         ),
         SliverList(
           delegate: SliverChildBuilderDelegate(
-            childCount: count,
+            childCount: carts.length,
             (context, index) {
+              final item = carts[index];
+
               return Dismissible(
                 //void error handler ondismissed, make sure u will do this func when application is success
                 key: UniqueKey(),
                 direction: DismissDirection.endToStart,
                 onDismissed: (direction) {
                   setState(() {
-                    count -= 1;
+                    ref.read(cartsProvider.notifier).removeDataCarts(item.id);
                   });
                 },
                 background: Container(
@@ -53,7 +71,7 @@ class _CartsViewState extends State<CartsView> {
                 ),
                 child: FadeInUp(
                   child: _Carts(
-                    index: index,
+                    item: item,
                   ),
                 ),
               );
@@ -66,57 +84,99 @@ class _CartsViewState extends State<CartsView> {
 }
 
 class _Carts extends StatelessWidget {
-  final int index;
-  const _Carts({required this.index});
+  final Product item;
+  const _Carts({required this.item});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        SizedBox(
-          width: 100,
-          child: AspectRatio(
-            aspectRatio: 1,
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: const Color(0xFFF5F6F9),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Image.asset('assets/images/1.jpg'),
-            ),
-          ),
-        ),
-        const SizedBox(width: 20),
-        Column(
+    final size = MediaQuery.of(context).size;
+    var price =
+        NumberFormat.simpleCurrency(decimalDigits: 0).format(item.price);
+    final textStyle = Theme.of(context).textTheme;
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SizedBox(
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "shirt",
-              style: TextStyle(color: Colors.black, fontSize: 16),
-              maxLines: 2,
+            SizedBox(
+              width: size.width * 0.3,
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: FadeInImage(
+                    fit: BoxFit.cover,
+                    image: NetworkImage(item.images[0]),
+                    placeholder: const AssetImage('assets/1.gif'),
+                  ),
+                ),
+              ),
             ),
-            const SizedBox(height: 10),
-            RichText(
-              text: TextSpan(
-                text: "\$50",
-                style: const TextStyle(
-                    fontWeight: FontWeight.w600, color: Colors.green),
+            const SizedBox(width: 20),
+            SizedBox(
+              width: size.width * 0.6,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const WidgetSpan(
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 20.0),
+                  Text(
+                    item.name.toUpperCase(),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: textStyle.titleMedium?.copyWith(
+                      fontSize: 15,
                     ),
                   ),
-                  TextSpan(
-                      text: "x $index",
-                      style: Theme.of(context).textTheme.bodyMedium),
+                  Text(
+                    item.brand,
+                    style: textStyle.titleMedium?.copyWith(
+                      fontSize: 17,
+                      color: Colors.green,
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        price,
+                        style:
+                            const TextStyle(color: Colors.green, fontSize: 16),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Row(
+                          children: [
+                            IconButton(
+                                onPressed: () {},
+                                icon: const Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                )),
+                            Text(
+                              "${item.qty}",
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 16),
+                            ),
+                            IconButton(
+                                onPressed: () {},
+                                icon: const Icon(
+                                  Icons.remove,
+                                  color: Colors.white,
+                                ))
+                          ],
+                        ),
+                      )
+                    ],
+                  )
                 ],
               ),
             )
           ],
-        )
-      ],
+        ),
+      ),
     );
   }
 }

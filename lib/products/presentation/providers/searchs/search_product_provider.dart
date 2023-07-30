@@ -1,7 +1,7 @@
-import 'package:ecommerce_ui_flutter/products/presentation/providers/products_repositories_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:ecommerce_ui_flutter/products/domain/domain.dart';
+import 'package:ecommerce_ui_flutter/products/presentation/providers/providers.dart';
 
 final searchedProvider = StateProvider<String>((ref) => "");
 

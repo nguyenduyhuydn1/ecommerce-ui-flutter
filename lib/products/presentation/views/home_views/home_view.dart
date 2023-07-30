@@ -1,9 +1,9 @@
-import 'package:ecommerce_ui_flutter/products/presentation/providers/products_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:ecommerce_ui_flutter/products/presentation/providers/providers.dart';
 import 'package:ecommerce_ui_flutter/products/presentation/widgets/widgets.dart';
 import 'package:ecommerce_ui_flutter/shared/shared.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});
