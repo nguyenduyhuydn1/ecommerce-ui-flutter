@@ -43,10 +43,18 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
             padding: const EdgeInsets.all(8.0),
             child: IconButton(
               onPressed: () async {
-                // await ref
-                //     .read(favoritesProvider.notifier)
-                //     .toggleFavorite(product);
                 await ref.read(cartsProvider.notifier).addToCarts(product);
+              },
+              icon: const Icon(Icons.shopping_cart_sharp),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: IconButton(
+              onPressed: () async {
+                await ref
+                    .read(favoritesProvider.notifier)
+                    .toggleFavorite(product);
               },
               icon: checkFavorite != -1
                   ? const Icon(
@@ -57,7 +65,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                       Icons.favorite_outline,
                     ),
             ),
-          )
+          ),
         ],
       ),
       body: SingleChildScrollView(

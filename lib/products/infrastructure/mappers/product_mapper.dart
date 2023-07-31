@@ -21,5 +21,6 @@ class ProductMapper {
         totalReviews: json["totalReviews"],
         averageRating: json["averageRating"],
         productId: json["id"],
+        qty: json['qty'] ?? 0,
       );
 }

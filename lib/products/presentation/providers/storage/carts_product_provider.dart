@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:ecommerce_ui_flutter/products/domain/entities/product.dart';
+import 'package:ecommerce_ui_flutter/products/infrastructure/mappers/product_mapper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:ecommerce_ui_flutter/shared/infrastructure/services/key_value_storage_service_impl.dart';
@@ -32,7 +33,12 @@ class CartsNotifier extends StateNotifier<List<Product>> {
     if (!checkKey) return;
 
     final carts = await keyValueStorageService.getValue<String>('carts');
-    final List<Product> products = jsonDecode(carts!);
+    final decode = jsonDecode(carts!);
+    final List<Product> products = [];
+    for (final x in decode) {
+      products.add(ProductMapper.jsonToEntity(x));
+    }
+
     state = products;
   }
 
@@ -56,9 +62,19 @@ class CartsNotifier extends StateNotifier<List<Product>> {
     await _entitiesToString(state);
   }
 
-  Future<void> addAndMinusCarts(String productId) async {
-    state = state.where((e) => e.id != productId).toList();
+  Future<void> addAndMinusCarts(String productId, int value) async {
+    final temp = state.map((e) {
+      if (e.id == productId) e.qty = e.qty! + value;
+      if (e.qty! <= 0) return null;
+      return e;
+    }).toList();
 
+    final List<Product> products = [];
+    for (final x in temp) {
+      if (x != null) products.add(x);
+    }
+
+    state = products;
     await _entitiesToString(state);
   }
 }

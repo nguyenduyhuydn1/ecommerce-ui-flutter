@@ -59,6 +59,7 @@ class Product {
   late int? qty;
 
   Product({
+    this.qty,
     required this.id,
     required this.name,
     required this.description,
@@ -100,6 +101,7 @@ class Product {
         totalReviews: json["totalReviews"],
         averageRating: json["averageRating"],
         productId: json["id"],
+        qty: json['qty'] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -122,5 +124,6 @@ class Product {
         "totalReviews": totalReviews,
         "averageRating": averageRating,
         "id": productId,
+        "qty": qty ?? 0,
       };
 }

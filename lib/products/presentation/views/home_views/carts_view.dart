@@ -22,7 +22,8 @@ class CartsViewState extends ConsumerState {
 
   @override
   Widget build(BuildContext context) {
-    var carts = ref.watch(cartsProvider);
+    final carts = ref.watch(cartsProvider);
+    final addAndMinus = ref.read(cartsProvider.notifier).addAndMinusCarts;
 
     if (carts.isEmpty) {
       return const Center(
@@ -49,7 +50,7 @@ class CartsViewState extends ConsumerState {
 
               return Dismissible(
                 //void error handler ondismissed, make sure u will do this func when application is success
-                key: UniqueKey(),
+                key: Key(item.id),
                 direction: DismissDirection.endToStart,
                 onDismissed: (direction) {
                   setState(() {
@@ -72,6 +73,7 @@ class CartsViewState extends ConsumerState {
                 child: FadeInUp(
                   child: _Carts(
                     item: item,
+                    addAndMinust: addAndMinus,
                   ),
                 ),
               );
@@ -85,7 +87,8 @@ class CartsViewState extends ConsumerState {
 
 class _Carts extends StatelessWidget {
   final Product item;
-  const _Carts({required this.item});
+  final Future<void> Function(String, int) addAndMinust;
+  const _Carts({required this.item, required this.addAndMinust});
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +153,9 @@ class _Carts extends StatelessWidget {
                         child: Row(
                           children: [
                             IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  addAndMinust(item.id, 1);
+                                },
                                 icon: const Icon(
                                   Icons.add,
                                   color: Colors.white,
@@ -161,7 +166,9 @@ class _Carts extends StatelessWidget {
                                   color: Colors.white, fontSize: 16),
                             ),
                             IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  addAndMinust(item.id, -1);
+                                },
                                 icon: const Icon(
                                   Icons.remove,
                                   color: Colors.white,
