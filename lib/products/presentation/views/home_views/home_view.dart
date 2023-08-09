@@ -35,7 +35,7 @@ class HomeViewState extends ConsumerState<HomeView> {
       physics: const ClampingScrollPhysics(),
       slivers: [
         SliverAppBar(
-          expandedHeight: size.height * 0.3,
+          // expandedHeight: size.height * 0.3,
           floating: false,
           pinned: true,
           actions: [
@@ -63,8 +63,6 @@ class HomeViewState extends ConsumerState<HomeView> {
               icon: const Icon(Icons.notifications, color: Colors.white),
             ),
           ],
-          // leading: const Text("ShipShop"),
-          // leadingWidth: 100,
           title: const Text("ShipShop",
               style: TextStyle(fontWeight: FontWeight.bold)),
           centerTitle: false,
