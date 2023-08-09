@@ -2,47 +2,48 @@ import 'package:ecommerce_ui_flutter/auth/presentation/providers/auth_provider.d
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
 class ProfileView extends ConsumerWidget {
   const ProfileView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const SizedBox(height: 70),
-        const Center(
-          child: _AvatarProfile(),
-        ),
-        _ProfileMenu(
-          text: "My Account",
-          icon: "assets/icons/User Icon.svg",
-          onPressed: () => {},
-        ),
-        _ProfileMenu(
-          text: "Notifications",
-          icon: "assets/icons/Bell.svg",
-          onPressed: () {},
-        ),
-        _ProfileMenu(
-          text: "Settings",
-          icon: "assets/icons/Settings.svg",
-          onPressed: () {},
-        ),
-        _ProfileMenu(
-          text: "Help Center",
-          icon: "assets/icons/Question mark.svg",
-          onPressed: () {},
-        ),
-        _ProfileMenu(
-          text: "Log Out",
-          icon: "assets/icons/Log out.svg",
-          onPressed: () {
-            ref.read(authProvider.notifier).logout();
-          },
-        ),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(height: 70),
+          const Center(
+            child: _AvatarProfile(),
+          ),
+          _ProfileMenu(
+            text: "My Account",
+            icon: "assets/icons/User Icon.svg",
+            onPressed: () => context.push('/profile'),
+          ),
+          _ProfileMenu(
+            text: "Notifications",
+            icon: "assets/icons/Bell.svg",
+            onPressed: () => context.push('/notifications'),
+          ),
+          _ProfileMenu(
+            text: "Settings",
+            icon: "assets/icons/Settings.svg",
+            onPressed: () {},
+          ),
+          _ProfileMenu(
+            text: "Help Center",
+            icon: "assets/icons/Question mark.svg",
+            onPressed: () {},
+          ),
+          _ProfileMenu(
+            text: "Log Out",
+            icon: "assets/icons/Log out.svg",
+            onPressed: ref.read(authProvider.notifier).logout,
+          ),
+        ],
+      ),
     );
   }
 }

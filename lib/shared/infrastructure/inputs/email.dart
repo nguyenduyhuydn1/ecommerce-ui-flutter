@@ -6,7 +6,7 @@ enum EmailError { empty, format }
 // Extend FormzInput and provide the input type and error type.
 class Email extends FormzInput<String, EmailError> {
   static final RegExp emailRegExp = RegExp(
-    r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+    r'[a-z0-9]{8,}(?:\.[a-z0-9]{8,})*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?',
   );
 
   // Call super.pure to represent an unmodified form input.
@@ -17,7 +17,6 @@ class Email extends FormzInput<String, EmailError> {
 
   String? get errorMessage {
     if (isValid || isPure) return null;
-
     if (displayError == EmailError.empty) return 'email is empty';
     if (displayError == EmailError.format) return 'format is wrong';
 

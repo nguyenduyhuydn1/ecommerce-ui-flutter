@@ -25,4 +25,14 @@ class ProductRepositoryImpl extends ProductRepository {
   Future<List<Product>> searchProductByTerm(String query) {
     return datasource.searchProductByTerm(query);
   }
+
+  @override
+  Future<List<Product>> getChanels({int page = 1, int limit = 10}) {
+    return datasource.getChanels(limit: limit, page: page);
+  }
+
+  @override
+  Future<List<Product>> getGuccis({int page = 1, int limit = 10}) {
+    return datasource.getGuccis(limit: limit, page: page);
+  }
 }

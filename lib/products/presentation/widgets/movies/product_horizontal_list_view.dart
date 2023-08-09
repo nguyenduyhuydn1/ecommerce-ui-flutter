@@ -13,13 +13,15 @@ class ProductHorizontalListView extends ConsumerStatefulWidget {
   final String title;
   final double height;
   final List<Product> products;
-  const ProductHorizontalListView({
-    super.key,
-    this.widthProduct = 0.4,
-    required this.title,
-    required this.height,
-    required this.products,
-  });
+  final Function loadNextPage;
+
+  const ProductHorizontalListView(
+      {super.key,
+      this.widthProduct = 0.4,
+      required this.title,
+      required this.height,
+      required this.products,
+      required this.loadNextPage});
 
   @override
   ProductHorizontalListViewState createState() =>
@@ -37,7 +39,7 @@ class ProductHorizontalListViewState
     scrollController.addListener(() {
       if ((scrollController.position.pixels + 200) >=
           scrollController.position.maxScrollExtent) {
-        ref.read(productsProvider.notifier).loadNextPage();
+        widget.loadNextPage();
       }
     });
   }
@@ -146,7 +148,7 @@ class _Slide extends StatelessWidget {
                           style: textStyle.titleMedium?.copyWith(
                             fontSize: 15,
                           ),
-                          maxLines: 3,
+                          maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
                         Text(

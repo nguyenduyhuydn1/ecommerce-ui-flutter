@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:ecommerce_ui_flutter/products/presentation/providers/storage/carts_product_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -198,11 +199,23 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
-                child: FadeInImage(
+                child: Image.network(
+                  product.images[index],
                   fit: BoxFit.cover,
-                  image: NetworkImage(product.images[index]),
-                  placeholder: const AssetImage('assets/1.gif'),
+                  width: size.width * 0.15,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress != null) {
+                      return Image.asset('assets/1.gif');
+                    }
+                    return FadeIn(child: child);
+                  },
                 ),
+
+                // FadeInImage(
+                //   fit: BoxFit.cover,
+                //   image: NetworkImage(product.images[index]),
+                //   placeholder: const AssetImage('assets/1.gif'),
+                // ),
 
                 // Image.network(
                 //   product.images[index],

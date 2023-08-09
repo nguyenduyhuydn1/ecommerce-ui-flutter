@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:ecommerce_ui_flutter/auth/domain/auth_repository.dart';
+import 'package:ecommerce_ui_flutter/auth/domain/repositories/auth_repository.dart';
 import 'package:ecommerce_ui_flutter/auth/domain/entities/user.dart';
 import 'package:ecommerce_ui_flutter/auth/infrastructure/datasources/auth_datasource_impl.dart';
 import 'package:ecommerce_ui_flutter/auth/infrastructure/errors/auth_errors.dart';
@@ -41,9 +41,21 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  void registerUser(String email, String password) async {}
+  Future<void> registerUser(String email, String password, String fullName,
+      {bool service = false}) async {
+    try {
+      final user = await authRepository.register(email, password, fullName,
+          service: service);
 
-  void checkAuthStatus() async {
+      _setLoggedUser(user);
+    } on CustomError catch (e) {
+      logout(e.message);
+    } catch (e) {
+      logout('Error 404');
+    }
+  }
+
+  Future<void> checkAuthStatus() async {
     final token = await keyValueStorageService.getValue<String>('token');
     if (token == null) return logout();
 
@@ -55,7 +67,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  void _setLoggedUser(User user) async {
+  Future<void> _setLoggedUser(User user) async {
     await keyValueStorageService.setKeyValue('token', user.token);
 
     state = state.copyWith(
@@ -73,6 +85,29 @@ class AuthNotifier extends StateNotifier<AuthState> {
       user: null,
       errorMessage: errorMessage,
     );
+  }
+
+  Future<void> uploadProfile(
+    String fullName,
+    String address,
+    String city,
+    String postalCode,
+    String phone,
+    String country,
+  ) async {
+    final token = await keyValueStorageService.getValue<String>('token');
+    if (token == null) return logout();
+
+    final user = await authRepository.uploadProfile(token, {
+      "fullName": fullName,
+      "address": address,
+      "city": city,
+      "postalCode": postalCode,
+      "phone": phone,
+      "country": country,
+    });
+
+    _setLoggedUser(user);
   }
 }
 

@@ -6,7 +6,7 @@ enum PasswordError { empty, length, format }
 // Extend FormzInput and provide the input type and error type.
 class Password extends FormzInput<String, PasswordError> {
   static final RegExp passwordRegExp = RegExp(
-    r'(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$',
+    r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$',
   );
 
   // Call super.pure to represent an unmodified form input.
@@ -20,7 +20,7 @@ class Password extends FormzInput<String, PasswordError> {
 
     if (displayError == PasswordError.empty) return 'password is empty';
     if (displayError == PasswordError.length) {
-      return 'password must be greater than 6';
+      return 'password must be greater than 8';
     }
     if (displayError == PasswordError.format) {
       return 'password contains special characters';
@@ -33,8 +33,8 @@ class Password extends FormzInput<String, PasswordError> {
   @override
   PasswordError? validator(String value) {
     if (value.isEmpty || value.trim().isEmpty) return PasswordError.empty;
-    // if (value.length < 6) return PasswordError.length;
-    // if (!passwordRegExp.hasMatch(value)) return PasswordError.format;
+    if (value.length < 9) return PasswordError.length;
+    if (!passwordRegExp.hasMatch(value)) return PasswordError.format;
 
     return null;
   }

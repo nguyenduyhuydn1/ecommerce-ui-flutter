@@ -9,6 +9,7 @@ class User {
   final bool hasShippingAddress;
   final String token;
   final String message;
+  final ShippingAddress shippingAddress;
 
   User({
     required this.id,
@@ -21,6 +22,7 @@ class User {
     required this.hasShippingAddress,
     required this.token,
     required this.message,
+    required this.shippingAddress,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -34,6 +36,7 @@ class User {
         hasShippingAddress: json["hasShippingAddress"],
         token: json["token"],
         message: json["message"],
+        shippingAddress: ShippingAddress.fromJson(json["shippingAddress"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -47,5 +50,43 @@ class User {
         "hasShippingAddress": hasShippingAddress,
         "token": token,
         "message": message,
+        "shippingAddress": shippingAddress.toJson(),
+      };
+}
+
+class ShippingAddress {
+  final String fullName;
+  final String address;
+  final String city;
+  final String postalCode;
+  final String phone;
+  final String country;
+
+  ShippingAddress({
+    required this.fullName,
+    required this.address,
+    required this.city,
+    required this.postalCode,
+    required this.phone,
+    required this.country,
+  });
+
+  factory ShippingAddress.fromJson(Map<String, dynamic> json) =>
+      ShippingAddress(
+        fullName: json["fullName"],
+        address: json["address"],
+        city: json["city"],
+        postalCode: json["postalCode"],
+        phone: json["phone"],
+        country: json["country"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "fullName": fullName,
+        "address": address,
+        "city": city,
+        "postalCode": postalCode,
+        "phone": phone,
+        "country": country,
       };
 }

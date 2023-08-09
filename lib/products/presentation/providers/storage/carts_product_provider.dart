@@ -77,4 +77,9 @@ class CartsNotifier extends StateNotifier<List<Product>> {
     state = products;
     await _entitiesToString(state);
   }
+
+  Future<void> emptyCarts() async {
+    keyValueStorageService.removeKey('carts');
+    state = [];
+  }
 }

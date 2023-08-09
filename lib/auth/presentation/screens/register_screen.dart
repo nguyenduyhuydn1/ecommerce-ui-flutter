@@ -1,11 +1,18 @@
-import 'package:ecommerce_ui_flutter/auth/presentation/widgets/widgets.dart';
+import 'package:ecommerce_ui_flutter/shared/infrastructure/services/google_sign_in_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class RegisterScreen extends StatelessWidget {
+import 'package:ecommerce_ui_flutter/auth/presentation/providers/providers.dart';
+import 'package:ecommerce_ui_flutter/auth/presentation/widgets/widgets.dart';
+import 'package:go_router/go_router.dart';
+
+class RegisterScreen extends ConsumerWidget {
   const RegisterScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isPosting = ref.watch(registerFormProvider).isPosting;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -29,24 +36,39 @@ class RegisterScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 40),
-              const CustomFormField(widgets: [
-                // CustomTextField(
-                //   hintText: "Enter your email",
-                // ),
-                // CustomTextField(
-                //   hintText: "Enter your password",
-                // ),
-                // CustomTextField(
-                //   hintText: "Re-enter your password",
-                //   borderBottom: false,
-                // ),
+              CustomFormField(widgets: [
+                CustomTextField(
+                  keyboardType: TextInputType.emailAddress,
+                  onChanged:
+                      ref.read(registerFormProvider.notifier).onEmailChange,
+                  hint: "Enter your email",
+                ),
+                CustomTextField(
+                  keyboardType: TextInputType.visiblePassword,
+                  onChanged:
+                      ref.read(registerFormProvider.notifier).onPasswordChanged,
+                  hint: "Enter your password",
+                  borderBottom: false,
+                ),
+                CustomTextField(
+                  keyboardType: TextInputType.visiblePassword,
+                  onChanged: ref
+                      .read(registerFormProvider.notifier)
+                      .onConfirmPasswordChanged,
+                  hint: "Confirm your password",
+                  borderBottom: false,
+                ),
               ]),
               const SizedBox(height: 70),
               CustomFilledButton(
                 width: 250,
                 height: 50,
-                text: "Continue",
-                onPressed: () {},
+                text: "Submit",
+                onPressed: () {
+                  isPosting
+                      ? null
+                      : ref.read(registerFormProvider.notifier).onFormSubmit();
+                },
               ),
               const SizedBox(height: 40),
               //media social
@@ -55,7 +77,14 @@ class RegisterScreen extends StatelessWidget {
                 children: [
                   SocialButton(
                     icon: 'assets/icons/google-icon.svg',
-                    onPressed: () {},
+                    onPressed: () async {
+                      await GoogleAuthService(
+                          ref: ref,
+                          context: context,
+                          func: () {
+                            context.push('/');
+                          }).signInWithGoogle();
+                    },
                   ),
                   SocialButton(
                     icon: 'assets/icons/facebook-2.svg',

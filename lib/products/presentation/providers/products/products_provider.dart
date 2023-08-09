@@ -4,16 +4,34 @@ import 'package:ecommerce_ui_flutter/products/domain/repositories/product_reposi
 import 'package:ecommerce_ui_flutter/products/domain/entities/product.dart';
 import 'package:ecommerce_ui_flutter/products/presentation/providers/providers.dart';
 
+final chanelsProvider =
+    StateNotifierProvider<ProductsNotifier, ProductsState>((ref) {
+  final productsRepository = ref.watch(productsRepositoryProvider);
+  final chanels = ref.watch(productsRepositoryProvider).getChanels;
+  return ProductsNotifier(chanels, productsRepository: productsRepository);
+});
+
+final gucciProvider =
+    StateNotifierProvider<ProductsNotifier, ProductsState>((ref) {
+  final productsRepository = ref.watch(productsRepositoryProvider);
+  final guccis = ref.watch(productsRepositoryProvider).getGuccis;
+  return ProductsNotifier(guccis, productsRepository: productsRepository);
+});
+
 final productsProvider =
     StateNotifierProvider<ProductsNotifier, ProductsState>((ref) {
   final productsRepository = ref.watch(productsRepositoryProvider);
-  return ProductsNotifier(productsRepository: productsRepository);
+  final products = ref.watch(productsRepositoryProvider).getProducts;
+  return ProductsNotifier(products, productsRepository: productsRepository);
 });
+
+typedef ProductCallback = Future<List<Product>> Function({int page, int limit});
 
 class ProductsNotifier extends StateNotifier<ProductsState> {
   final ProductRepository productsRepository;
+  ProductCallback fetchProduct;
 
-  ProductsNotifier({required this.productsRepository})
+  ProductsNotifier(this.fetchProduct, {required this.productsRepository})
       : super(ProductsState()) {
     loadNextPage();
   }
@@ -32,9 +50,7 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
 
       state = state.copyWith(
           products: state.products
-              .map(
-                (element) => (element.id == product.id) ? product : element,
-              )
+              .map((element) => (element.id == product.id) ? product : element)
               .toList());
       return true;
     } catch (e) {
@@ -47,8 +63,7 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
 
     state = state.copyWith(isLoading: true);
 
-    final products = await productsRepository.getProducts(
-        limit: state.limit, page: state.page);
+    final products = await fetchProduct(limit: state.limit, page: state.page);
 
     if (products.isEmpty) {
       state = state.copyWith(isLoading: false, isLastPage: true);
@@ -56,16 +71,12 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
     }
 
     state = state.copyWith(
-        isLastPage: false,
-        isLoading: false,
-        page: state.page + 1,
-        products: [...state.products, ...products]);
+      isLastPage: false,
+      isLoading: false,
+      page: state.page + 1,
+      products: [...state.products, ...products],
+    );
   }
-
-  // Product getSingleProduct(String productId) {
-  //   final product = state.products.firstWhere((e) => e.id == productId);
-  //   return product;
-  // }
 }
 
 class ProductsState {

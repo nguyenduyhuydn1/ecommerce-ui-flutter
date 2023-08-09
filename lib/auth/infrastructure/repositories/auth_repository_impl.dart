@@ -1,6 +1,6 @@
 import 'package:ecommerce_ui_flutter/auth/domain/entities/user.dart';
 import 'package:ecommerce_ui_flutter/auth/domain/datasources/auth_datasource.dart';
-import 'package:ecommerce_ui_flutter/auth/domain/auth_repository.dart';
+import 'package:ecommerce_ui_flutter/auth/domain/repositories/auth_repository.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
   final AuthDataSource dataSource;
@@ -18,7 +18,13 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<User> register(String email, String password, String fullName) {
-    return dataSource.register(email, password, fullName);
+  Future<User> uploadProfile(String token, Map<String, dynamic> obj) {
+    return dataSource.uploadProfile(token, obj);
+  }
+
+  @override
+  Future<User> register(String email, String password, String fullName,
+      {bool service = false}) {
+    return dataSource.register(email, password, fullName, service: service);
   }
 }

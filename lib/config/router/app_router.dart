@@ -10,7 +10,7 @@ import 'package:ecommerce_ui_flutter/products/presentation/screens/screens.dart'
 final goRouterProvider = Provider((ref) {
   final goRouterNotifier = ref.read(goRouterNotifierProvider);
   return GoRouter(
-    initialLocation: '/login',
+    initialLocation: '/splash',
     refreshListenable: goRouterNotifier,
     routes: [
       GoRoute(
@@ -21,21 +21,9 @@ final goRouterProvider = Provider((ref) {
       ),
       GoRoute(
         path: '/login',
-        // name: HomeScreen.name,
         builder: (context, state) {
           return const LoginScreen();
         },
-        // routes: [
-        //   GoRoute(
-        //     path: 'movie/:id',
-        //     name: MovieScreen.name,
-        //     builder: (context, state) {
-        //       final movieId = state.pathParameters['id'] ?? 'no-id';
-
-        //       return MovieScreen(movieId: movieId);
-        //     },
-        //   ),
-        // ],
       ),
       GoRoute(
         path: '/register',
@@ -43,30 +31,48 @@ final goRouterProvider = Provider((ref) {
           return const RegisterScreen();
         },
       ),
+      // GoRoute(
+      //   path: '/complete_profile',
+      //   builder: (context, state) {
+      //     return const CompleteProfileScreen();
+      //   },
+      // ),
       GoRoute(
-        path: '/complete_profile',
+        path: '/profile',
         builder: (context, state) {
-          return const CompleteProfileScreen();
+          return const ProfileScreen();
         },
       ),
       GoRoute(
-          path: '/',
-          builder: (context, state) {
-            // final pageIndex = int.parse(state.pathParameters['page'] ?? '0');
-            return const HomeScreen();
-          },
-          routes: [
-            GoRoute(
-              path: 'product/:id',
-              builder: (context, state) {
-                final productId = state.pathParameters['id'] ?? 'no-id';
+        path: '/notifications',
+        builder: (context, state) {
+          return const NotificationsScreen();
+        },
+      ),
+      // GoRoute(
+      //   path: '/new_card',
+      //   builder: (context, state) {
+      //     return const CreditCardScreen();
+      //   },
+      // ),
+      GoRoute(
+        path: '/',
+        builder: (context, state) {
+          return const HomeScreen();
+        },
+        routes: [
+          GoRoute(
+            path: 'product/:id',
+            builder: (context, state) {
+              final productId = state.pathParameters['id'] ?? 'no-id';
 
-                return ProductScreen(
-                  productId: productId,
-                );
-              },
-            ),
-          ]),
+              return ProductScreen(
+                productId: productId,
+              );
+            },
+          ),
+        ],
+      ),
       GoRoute(
         path: '/',
         redirect: (_, __) => '/',
@@ -74,6 +80,7 @@ final goRouterProvider = Provider((ref) {
     ],
     redirect: (context, state) {
       final isGoingTo = state.fullPath;
+      print(isGoingTo);
       final authStatus = goRouterNotifier.authStatus;
 
       if (isGoingTo == '/splash' && authStatus == AuthStatus.checking) {

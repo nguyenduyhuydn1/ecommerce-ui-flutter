@@ -2,7 +2,7 @@ import 'package:ecommerce_ui_flutter/auth/domain/entities/user.dart';
 
 class UserMapper {
   static User userJsonToEntity(Map<String, dynamic> json) => User(
-        fullname: json["fullname"],
+        fullname: json["fullname"] ?? 'fuk u',
         email: json["email"],
         password: json["password"],
         orders: List<dynamic>.from(json["orders"].map((x) => x)),
@@ -12,5 +12,8 @@ class UserMapper {
         id: json["_id"],
         token: json["token"],
         message: json["message"],
+        shippingAddress: ShippingAddress.fromJson(
+          json["shippingAddress"],
+        ),
       );
 }

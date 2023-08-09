@@ -1,4 +1,5 @@
 import 'package:ecommerce_ui_flutter/auth/presentation/providers/providers.dart';
+import 'package:ecommerce_ui_flutter/shared/infrastructure/services/google_sign_in_service.dart';
 import 'package:flutter/material.dart';
 
 import 'package:ecommerce_ui_flutter/auth/presentation/widgets/widgets.dart';
@@ -167,7 +168,14 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                           children: [
                             SocialButton(
                               icon: 'assets/icons/google-icon.svg',
-                              onPressed: () {},
+                              onPressed: () async {
+                                await GoogleAuthService(
+                                    ref: ref,
+                                    context: context,
+                                    func: () {
+                                      context.push('/');
+                                    }).signInWithGoogle();
+                              },
                             ),
                             SocialButton(
                               icon: 'assets/icons/facebook-2.svg',

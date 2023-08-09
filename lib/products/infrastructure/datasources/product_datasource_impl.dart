@@ -51,4 +51,26 @@ class ProductDatasourceImpl extends ProductDatasource {
     }
     return products;
   }
+
+  @override
+  Future<List<Product>> getChanels({int page = 1, int limit = 10}) async {
+    final res = await dio.get('/products?brand=chanel&limit=$limit&page=$page');
+    final List<Product> products = [];
+
+    for (final product in res.data["products"]) {
+      products.add(ProductMapper.jsonToEntity(product));
+    }
+    return products;
+  }
+
+  @override
+  Future<List<Product>> getGuccis({int page = 1, int limit = 10}) async {
+    final res = await dio.get('/products?brand=gucci&limit=$limit&page=$page');
+    final List<Product> products = [];
+
+    for (final product in res.data["products"]) {
+      products.add(ProductMapper.jsonToEntity(product));
+    }
+    return products;
+  }
 }
