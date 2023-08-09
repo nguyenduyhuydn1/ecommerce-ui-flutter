@@ -28,7 +28,7 @@ class HomeViewState extends ConsumerState<HomeView> {
     final productsState = ref.watch(productsProvider);
     final chanelsState = ref.watch(chanelsProvider);
     final guccisState = ref.watch(gucciProvider);
-    final size = MediaQuery.of(context).size;
+    // final size = MediaQuery.of(context).size;
     print('HomeView-------------------------------------------------------');
 
     return CustomScrollView(

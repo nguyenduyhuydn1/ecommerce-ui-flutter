@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import 'package:ecommerce_ui_flutter/products/domain/entities/product.dart';
-import 'package:ecommerce_ui_flutter/products/presentation/providers/providers.dart';
 import 'package:ecommerce_ui_flutter/products/presentation/views/custom_shimmer.dart';
 
 class ProductHorizontalListView extends ConsumerStatefulWidget {

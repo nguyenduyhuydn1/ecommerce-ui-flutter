@@ -1,6 +1,8 @@
 import 'package:ecommerce_ui_flutter/products/presentation/providers/profiles/profile_form_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:quickalert/quickalert.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -71,7 +73,7 @@ class ProfileScreenState extends ConsumerState {
                         ],
                       ),
                       child: OutlinedButton(
-                        onPressed: () {},
+                        onPressed: () => context.pop(),
                         style: OutlinedButton.styleFrom(
                             backgroundColor: Colors.white,
                             padding: const EdgeInsets.symmetric(horizontal: 50),
@@ -108,7 +110,14 @@ class ProfileScreenState extends ConsumerState {
                         onPressed: () async {
                           await ref
                               .read(profileFormProvider.notifier)
-                              .onFormSubmit(context, () {});
+                              .onFormSubmit(
+                                context,
+                                () => QuickAlert.show(
+                                  context: context,
+                                  type: QuickAlertType.success,
+                                  text: 'Transaction Completed Successfully!',
+                                ),
+                              );
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.green,
