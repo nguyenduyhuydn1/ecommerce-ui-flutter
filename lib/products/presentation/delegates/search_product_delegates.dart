@@ -27,6 +27,7 @@ class SearchProductDelegates extends SearchDelegate {
   void clearStream() async {
     await Future.delayed(const Duration(milliseconds: 500));
     debounceProducts.close();
+  //_debounceTimer!.cancel();
   }
 
   void _onQueryChanged(String query) {
